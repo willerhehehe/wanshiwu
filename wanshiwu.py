@@ -12,10 +12,11 @@ db.init_app(app)
 
 @app.route('/')
 def index():
+
     return render_template('index.html')
 
 
-@app.route('/login/',methods=['GET','POST'])
+@app.route('/login/',methods=['GET', 'POST'])
 def login():
     if request.method == 'GET':
         return render_template('login.html')
@@ -24,7 +25,7 @@ def login():
         password = request.form.get('password')
         user = User.query.filter(User.telephone == telephone,User.password == password).first()
         if user:
-            session['user_id']=user.id
+            session['user_id'] = user.id
             # 31天内不需要重复登陆
             session.permanent=True
             return  redirect(url_for('index'))
@@ -53,14 +54,14 @@ def regist():
                 user = User(telephone = telephone,username=username,password=password1)
                 db.session.add(user)
                 db.session.commit()
-                #如果注册成功则跳转登陆页面
+                # 如果注册成功则跳转登陆页面
                 return redirect(url_for('login'))
 
 
 @app.route('/logout/')
 def logout():
-    #session.pop('user_id')
-    #del session['user_id']
+    # session.pop('user_id')
+    # del session['user_id']
     session.clear()
     return redirect(url_for('login'))
 
