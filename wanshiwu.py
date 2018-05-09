@@ -2,8 +2,9 @@
 
 from flask import Flask,render_template,request,redirect,url_for,session
 import config
-from models import User
+from models import User,Question
 from exts import db
+import time
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -12,8 +13,10 @@ db.init_app(app)
 
 @app.route('/')
 def index():
-
-    return render_template('index.html')
+    context = {
+        'questions': Question.query.all()
+    }
+    return render_template('index.html',**context)
 
 
 @app.route('/login/',methods=['GET', 'POST'])
@@ -66,13 +69,17 @@ def logout():
     return redirect(url_for('login'))
 
 
-@app.route('/question/')
+@app.route('/question/',methods=['GET','POST'])
 def question():
     if request.method == 'GET':
         return render_template('question.html')
     else:
-        pass
-
+        title = request.form.get('title')
+        content = request.form.get('content')
+        questions = Question(title=title, text=content, time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+        db.session.add(questions)
+        db.session.commit()
+        return '发布成功'
 
 @app.context_processor
 def my_context_processor():

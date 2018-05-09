@@ -1,4 +1,4 @@
-#encoding:utf-8
+# encoding:utf-8
 
 from exts import db
 
@@ -7,6 +7,16 @@ class User(db.Model):
     __tablename__='user'
     id = db.Column(db.Integer,primary_key=True,autoincrement=True)
     telephone = db.Column(db.String(11),nullable=False)
-    username=db.Column(db.String(50),nullable=False)
-    password= db.Column(db.String(100),nullable=False)
+    username = db.Column(db.String(50),nullable=False)
+    password = db.Column(db.String(100),nullable=False)
 
+    questions = db.relationship('Question', backref='users')
+
+
+class Question(db.Model):
+    __tablename__ = 'question'
+    id = db.Column(db.Integer,primary_key=True, autoincrement=True)
+    title = db.Column(db.String(100), nullable=False)
+    text = db.Column(db.Text,nullable=False)
+    time = db.Column(db.DateTime,nullable=False)
+    use_id = db.Column(db.Integer, db.ForeignKey('user.id'))
