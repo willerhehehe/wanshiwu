@@ -5,6 +5,7 @@ import config
 from models import User,Question
 from exts import db
 import time
+from ziroom import main
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -71,14 +72,14 @@ def logout():
 
 @app.route('/question/',methods=['GET','POST'])
 def question():
-    if session.get('user_name'):
+    if session.get('user_id'):
         if request.method == 'GET':
             return render_template('question.html')
         else:
             title = request.form.get('title')
             content = request.form.get('content')
             if title !='' and content !='':
-                questions = Question(title=title, text=content,use_id=session['id'],time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+                questions = Question(title=title, text=content,use_id=session['user_id'],time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
                 db.session.add(questions)
                 db.session.commit()
                 return '发布成功'
