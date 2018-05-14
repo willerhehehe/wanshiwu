@@ -3,3 +3,9 @@
     margin: 0 auto;
     text-align: right;
 }
+
+.warning{
+    color: firebrick;
+    font-size: x-small;
+    text-align: left;
+}

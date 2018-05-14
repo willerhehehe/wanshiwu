@@ -13,9 +13,15 @@
             <div class="form-group">
                 <input type="text" placeholder="请输入标题" name="title" class="form-control">
             </div>
+            {% if title == ''  %}
+            <p class="warning">发布标题不能为空</p>
+            {% endif %}
             <div class="form-group">
                 <textarea name="content" placeholder="请输入内容" rows="5" class="form-control"></textarea>
             </div>
+             {% if content == ''  %}
+            <p class="warning">发布内容不能为空</p>
+            {% endif %}
             <div class="form-group">
                 <button class="btn btn-primary">立即发布</button>
             </div>

@@ -14,7 +14,7 @@ db.init_app(app)
 @app.route('/')
 def index():
     context = {
-        'questions': Question.query.all()
+        'questions': Question.query.order_by('-time').all()
     }
     return render_template('index.html',**context)
 
@@ -71,15 +71,27 @@ def logout():
 
 @app.route('/question/',methods=['GET','POST'])
 def question():
-    if request.method == 'GET':
-        return render_template('question.html')
+    if session.get('user_name'):
+        if request.method == 'GET':
+            return render_template('question.html')
+        else:
+            title = request.form.get('title')
+            content = request.form.get('content')
+            if title !='' and content !='':
+                questions = Question(title=title, text=content,use_id=session['id'],time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
+                db.session.add(questions)
+                db.session.commit()
+                return '发布成功'
+            else:
+                return render_template('question.html',title=title,content=content)
     else:
-        title = request.form.get('title')
-        content = request.form.get('content')
-        questions = Question(title=title, text=content, time=time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())))
-        db.session.add(questions)
-        db.session.commit()
-        return '发布成功'
+        return redirect(url_for('login'))
+
+
+@app.route('/ziroom/')
+def ziroom():
+    return render_template('ziroom.html')
+
 
 @app.context_processor
 def my_context_processor():

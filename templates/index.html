@@ -8,44 +8,20 @@
 
 {%block main%}
     <ul>
+        {% for i in questions %}
         <li class="list">
             <div class="avatar-group">
                 <img src="{{ url_for('static',filename='favicon.ico') }}" alt="" class="avatar">
             </div>
             <div class="question-group">
-                <p class="question-title"><a href="#">万事屋是什么？</a></p>
-                <p class="question-">万事屋，出自日本漫画家空知英秋原作的人气动漫《银魂》中主角坂田银时所经营的万事屋。因为天人的袭击，武士没落，所以身为武士的坂田银时为了维生，建立万事屋，接受别人所有的请求。</p>
+                <p class="question-title"><a href="#">{{ i.title }}</a></p>
+                <p class="question-">{{ i.text }}</p>
                 <div class="question-info">
-                    <span class="question-author">万事屋</span>
-                    <span class="question-time">2018-05-08 17:55:51</span>
+                    <span class="question-author">{{ i.users.username }}</span>
+                    <span class="question-time">{{ i.time }}</span>
                 </div>
             </div>
         </li>
-        <li class="list">
-            <div class="avatar-group">
-                <img src="{{ url_for('static',filename='favicon.ico') }}" alt="" class="avatar">
-            </div>
-            <div class="question-group">
-                <p class="question-title"><a href="#">万事屋是什么？</a></p>
-                <p class="question-">万事屋，出自日本漫画家空知英秋原作的人气动漫《银魂》中主角坂田银时所经营的万事屋。因为天人的袭击，武士没落，所以身为武士的坂田银时为了维生，建立万事屋，接受别人所有的请求。</p>
-                <div class="question-info">
-                    <span class="question-author">万事屋</span>
-                    <span class="question-time">2018-05-08 17:55:51</span>
-                </div>
-            </div>
-        </li>
-        <li class="list">
-            <div class="avatar-group">
-                <img src="{{ url_for('static',filename='favicon.ico') }}" alt="" class="avatar">
-            </div>
-            <div class="question-group">
-                <p class="question-title"><a href="#">万事屋是什么？</a></p>
-                <p class="question-">万事屋，出自日本漫画家空知英秋原作的人气动漫《银魂》中主角坂田银时所经营的万事屋。因为天人的袭击，武士没落，所以身为武士的坂田银时为了维生，建立万事屋，接受别人所有的请求。</p>
-                <div class="question-info">
-                    <span class="question-author">万事屋</span>
-                    <span class="question-time">2018-05-08 17:55:51</span>
-                </div>
-            </div>
-        </li>
+        {% endfor %}
     </ul>
 {% endblock %}
