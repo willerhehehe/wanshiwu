@@ -2,18 +2,16 @@
 
 {% block title %}自如找房{% endblock %}
 {% block head %}
-<script>
-    function foo() {
-        var x = document.getElementById("test");
-        x.style.fontSize = "25px";
-        x.style.color = "red";
-        x.innerHTML = "ok";
+    <script>
+    function submitBtnClick(){
+        document.demo1.submit();
     }
-</script>
+    </script>
 <link rel="stylesheet" href="{{ url_for('static',filename = 'css/ziroom.css') }}">
 {% endblock %}
 
 {%block main%}
+{#    所有的线路及站点需要全写出来，可能会比较麻烦 带下拉列表的输入框   #}
     <p class="choice_title">请选择靠近的地铁线路:</p>
     <div class="dropdown">
       <button  class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -27,17 +25,24 @@
       </ul>
     </div>
     <p class="choice_title">请选择靠近的地铁站:</p>
-    <div class="dropdown">
-      <button  class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-        地铁
-        <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-        {% for i in [1,2,3,4,6,7,8,9,11,13] %}
-          <li><a href="">{{i}}号线</a></li>
-        {% endfor %}
-      </ul>
-    </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="input-group">
+                <input type="text" name="demo1" class="form-control" aria-label="...">
+                <div class="input-group-btn">
+                    <button type="button" onclick="submitBtnClick()" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">Action <span class="caret"></span></button>
+                    <ul class="dropdown-menu dropdown-menu-right">
+                        <li><a onclick="submitBtnClick()">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li role="separator" class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                    </ul>
+                </div><!-- /btn-group -->
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+    </div><!-- /.row -->
     <h1 id="test">123</h1>
     <h2>456</h2>
 {% endblock %}

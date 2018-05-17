@@ -68,6 +68,10 @@ def main(line_num,station,price_low,price_high):
 	list_total=sorted(list_total,key=lambda t:t[5]/float(t[3]))
 	return list_total
 
+
+if __name__=='__main__':
+	main(8,'杨思',0,8000)
+
 '''
 list_total[0]=['友家 · 上南路3520弄6居室-南卧', 'sh.ziroom.com/z/vr/61103599.html', 'img.ziroom.com/pic/house_images/g2/M00/66/F0/ChAFfVq8xpWALPT7ABRb9gPZjbA175.JPG_C_264_198_Q80.jpg', '11.3', 995, 1830, '[浦东三林] 8号线杨思']
 

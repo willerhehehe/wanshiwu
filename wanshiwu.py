@@ -89,10 +89,16 @@ def question():
         return redirect(url_for('login'))
 
 
-@app.route('/ziroom/')
+@app.route('/ziroom/',methods=['GET','POST'])
 def ziroom():
-    return render_template('ziroom.html')
+    if request.method == 'GET':
+        return render_template('ziroom.html')
+    else:
+        return request.form.get('demo1')
 
+@app.route('/demo/')
+def demo():
+    return render_template('demo.html')
 
 @app.context_processor
 def my_context_processor():
