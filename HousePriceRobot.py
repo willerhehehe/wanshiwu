@@ -34,18 +34,42 @@ def get_url_list():
 def search_data(city_name, url='https://xa.fang.lianjia.com/loupan/'):
     html = requests.get(url, headers=header).text
     bs_obj = BeautifulSoup(html, 'html.parser')
-    li_list = bs_obj.find_all('li', {'class': 'resblock-list-item post_ulog_exposure_scroll'})
-    for i in li_list:
-        name = i.find('h3', {'class': 'name'}).text
-        try:
-            price_num = i.find('span', {'class': 'price_num'}).text
-        except:
-            price_num = ''
-        price = price_num + i.find('span', {'class': 'price_bunch'}).text
-        #区域划分
+    totalnum = int(bs_obj.find('section',{'class':'toast-inline animation inactive'}).find('span').text)
+    count=0
+    page_count=0
+    while count<= totalnum:
+        page_count+=1
+        print('page_count:{}'.format(page_count))
+        page_url='{0}pg{1}/'.format(url,page_count)
+        print(page_url)
+        html = requests.get(page_url, headers=header).text
+        bs_obj = BeautifulSoup(html, 'html.parser')
+        if bs_obj.find('div',{'class':'no-result-wrapper show'}) is not None:  #当搜索到无结果页面时，终止循环
+            print(bs_obj.find('div',{'class':'noresult'}))
+            break
+        li_list = bs_obj.find_all('li', {'class': 'resblock-list'})
+        for i in li_list:
+            count+=1
+            name = i.find('a', {'class': 'name'}).text
+            print(name)
+            try:
+                price_num = i.find('span', {'class': 'number'}).text
+            except:
+                price_num = ''
+            try:
+                price_unit = i.find('span', {'class': 'desc'}).text
+            except:
+                price_unit = ''
+            price = price_num + price_unit
+            print(price)
+            sale_status = i.find('span',{'class':'sale-status'}).text# class="tag selling "
+            print(sale_status)
+    print('count:{}'.format(count))
+
+            #区域划分
     return None
 
 
 if __name__ == '__main__':
     url_list1 = get_url_list()
-    print(search_data(url_list1[0][1], url_list1[0][0]))
+    search_data('西安')
