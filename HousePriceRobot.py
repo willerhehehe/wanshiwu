@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-import sqlalchemy
+import time
+from multiprocessing import Pool
 
 header = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
@@ -42,7 +43,10 @@ def search_data(city_name, url='https://xa.fang.lianjia.com/loupan/'):
         print('page_count:{}'.format(page_count))
         page_url='{0}pg{1}/'.format(url,page_count)
         print(page_url)
-        html = requests.get(page_url, headers=header).text
+        try:
+            html = requests.get(page_url, headers=header).text
+        except TimeoutError:
+            continue
         bs_obj = BeautifulSoup(html, 'html.parser')
         if bs_obj.find('div',{'class':'no-result-wrapper show'}) is not None:  #当搜索到无结果页面时，终止循环
             print(bs_obj.find('div',{'class':'noresult'}))
@@ -71,5 +75,15 @@ def search_data(city_name, url='https://xa.fang.lianjia.com/loupan/'):
 
 
 if __name__ == '__main__':
+    start_time = time.time()
     url_list1 = get_url_list()
-    search_data('西安')
+    p=Pool()
+    for url in url_list1:
+        print('-'*20)
+        print('{}新楼盘价格一览'.format(url[1]))
+        print('-'*20)
+        p.apply_async(search_data,args=(url[1],url[0]))
+    p.close()
+    p.join()
+    end_time = time.time()
+    print('Tasks run {:.2f} minutes'.format((end_time-start_time)/60))
