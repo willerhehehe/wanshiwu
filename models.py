@@ -20,3 +20,16 @@ class Question(db.Model):
     text = db.Column(db.Text,nullable=False)
     time = db.Column(db.DateTime,nullable=False)
     use_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+
+
+class NewHouse(db.Model):
+    __tablename__ = 'newhouse'
+    id = db.Column(db.Integer,primary_key=True,autoincrement=True)
+    city = db.Column(db.String(50),nullable=False)
+    district = db.Column(db.String(100))
+    town = db.Column(db.String(100))
+    address = db.Column(db.Text)
+    building_name=db.Column(db.String(100),nullable=False)
+    price = db.Column(db.String(100),nullable=False)
+    status = db.Column(db.String(20))
+
