@@ -2,7 +2,7 @@
 
 from flask import Flask,render_template,request,redirect,url_for,session
 import config
-from models import User,Question
+from models import User,Question,Comment
 from exts import db
 import time
 from ziroom import main
@@ -96,9 +96,32 @@ def ziroom():
     else:
         return request.form.get('demo1')
 
+
+@app.route('/detail/<question_id>/')
+def detail(question_id):
+    question_info = Question.query.filter(Question.id == question_id).first()
+    return render_template('detail.html',question=question_info)
+
+
+@app.route('/add_comment/',methods=['POST'])
+def add_comment():
+    content = request.form.get('comment_content')
+    question_id = request.form.get('question_id')
+    comment = Comment(content=content)
+    user_id = session['user_id']
+    user = User.query.filter(User.id == user_id).first()
+    comment.author = user
+    question = Question.query.filter(Question.id == question_id).first()
+    comment.question=question
+    db.session.add(comment)
+    db.session.commit()
+    return redirect(url_for('detail',question_id=question_id))
+
+
 @app.route('/demo/')
 def demo():
     return render_template('demo.html')
+
 
 @app.context_processor
 def my_context_processor():

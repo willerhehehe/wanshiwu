@@ -14,7 +14,7 @@
                 <img src="{{ url_for('static',filename='favicon.ico') }}" alt="" class="avatar">
             </div>
             <div class="question-group">
-                <p class="question-title"><a href="#">{{ i.title }}</a></p>
+                <p class="question-title"><a href="{{ url_for('detail',question_id=i.id) }}">{{ i.title }}</a></p>
                 <p class="question-">{{ i.text }}</p>
                 <div class="question-info">
                     <span class="question-author">{{ i.users.username }}</span>
