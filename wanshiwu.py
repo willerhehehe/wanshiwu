@@ -5,7 +5,8 @@ import config
 from models import User,Question,Comment
 from exts import db
 import time
-from ziroom import main
+from werkzeug.utils import secure_filename # 关于文件上传的
+import os
 
 app = Flask(__name__)
 app.config.from_object(config)
@@ -24,6 +25,19 @@ def check_login(func):
 # @check_login
 # def test():
 #     return 'test pass'
+
+
+# 一个文件上传的小demo
+@app.route('/upload',methods=['POST','GET'])
+def upload():
+    if request.method == 'POST':
+        f = request.files.get('file')
+        basepath = os.path.dirname(__file__)  # 获取当前文件所在路径
+        upload_path = os.path.join(basepath, 'static/upload',secure_filename(f.filename))
+        f.save(upload_path)
+        return redirect(url_for('upload'))
+    return render_template('upload.html')
+
 
 @app.route('/')
 def index():
