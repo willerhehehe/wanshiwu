@@ -12,6 +12,19 @@ app.config.from_object(config)
 db.init_app(app)
 
 
+# 检测登录的装饰器
+def check_login(func):
+    def check(*args,**kwargs):
+        if not session.get('user_id'):
+            return redirect(url_for('login'))
+        return func(*args,**kwargs)
+    return check
+
+# @app.route('/test',endpoint='test')
+# @check_login
+# def test():
+#     return 'test pass'
+
 @app.route('/')
 def index():
     context = {
@@ -103,7 +116,8 @@ def detail(question_id):
     return render_template('detail.html',question=question_info)
 
 
-@app.route('/add_comment/',methods=['POST'])
+@app.route('/add_comment/',methods=['GET','POST'],endpoint='add_comment')
+@check_login
 def add_comment():
     content = request.form.get('comment_content')
     question_id = request.form.get('question_id')

@@ -16,7 +16,7 @@
     <p class="question-content">{{ question.text }}</p>
     <hr>
     <h4>评论：(0)</h4>
-    <form action="{{ url_for('add_comment') }}">
+    <form action="{{ url_for('add_comment') }}" method="post">
         <div class="form-group">
             <input name='comment_content' type="text" class="form-control" placeholder="请填写评论">
             <input type="hidden" name = "question_id" value = "{{ question.id }}">
@@ -25,4 +25,9 @@
             <button class="btn btn-primary">立即评论</button>
         </div>
     </form>
+    <ul>
+        {% for comment in question.comments %}
+            <li>{{ comment.content }}</li>
+        {% endfor %}
+    </ul>
 {% endblock %}
